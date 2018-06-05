@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "ph.appsolutely.mvvm_test"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        def API_URL =  "API_URL"
+
+        debug {
+            buildConfigField "String", API_URL, "\"http://192.168.4.74:3000/\""
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    buildToolsVersion '27.0.3'
+
+}
+kapt {
+    generateStubs = true
+    correctErrorTypes = true
+}
+
+dependencies {
+    def daggerVersion = '2.14.1'
+    def archLifecycleVersion = '1.1.1'
+    def archRoomVersion = '1.1.0'
+    def retrofitVersion = '2.4.0'
+    def supportVersion = '27.1.1'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
+
+    // LiveData and ViewModel
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$archRoomVersion"
+
+    // dependency injection
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    // network
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.4'
+
+    // CHUCK
+    debugCompile 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseCompile 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
